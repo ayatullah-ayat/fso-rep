@@ -1,4 +1,8 @@
-const http = require('http');
+const express = require('express');
+
+const app = express();
+
+app.use(express.json());
 
 let notes = [
     {
@@ -18,10 +22,20 @@ let notes = [
     }
   ]
 
-const app = http.createServer((request, response) => {
-    response.writeHead(200, {'Content-Type': 'application/json'})
-    response.end(JSON.stringify(notes));
-})
+  app.get('/', (request, response) => {
+    response.send('<a href="/notes">Notes</a>')
+  })
+
+  app.get('/notes', (request, response) => {
+    response.json(notes);
+  })
+  app.post('/notes', (request, response) => {
+    console.log('request body', request.body);
+  })
+  app.get('/api/notes/:id', (request, response) => {
+    let id = Number(request.params.id);
+    response.json(notes.find(note => note.id === id))
+  })
 
 const PORT = 3000;
 
