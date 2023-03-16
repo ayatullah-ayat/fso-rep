@@ -2,7 +2,18 @@ const express = require('express');
 
 const app = express();
 
+const requestLogger = (req, res, next) => {
+  console.log('Method:', req.method);
+  console.log('Path:', req.path);
+  console.log('Body:', req.body);
+  
+  console.log('___');
+  
+  next();
+}
 app.use(express.json());
+
+app.use(requestLogger);
 
 let notes = [
     {
@@ -40,5 +51,11 @@ let notes = [
 const PORT = 3000;
 
 app.listen(PORT);
+
+const unknownEndpoint = (request, response) => {
+  response.status(404).send({ error: 'unknown endpoint' })
+}
+
+app.use(unknownEndpoint)
 
 console.log("Server running on ", PORT);
