@@ -39,10 +39,10 @@ let notes = [
     response.send('<a href="/notes">Notes</a>')
   })
 
-  app.get('/notes', (request, response) => {
+  app.get('/api/notes', (request, response) => {
     response.json(notes);
   })
-  app.post('/notes', (request, response) => {
+  app.post('api/notes', (request, response) => {
     console.log('request body', request.body);
   })
   app.get('/api/notes/:id', (request, response) => {
@@ -50,7 +50,7 @@ let notes = [
     response.json(notes.find(note => note.id === id))
   })
 
-const PORT = 3000;
+const PORT = 3001;
 
 app.listen(PORT);
 
