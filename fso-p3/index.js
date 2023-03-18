@@ -1,5 +1,4 @@
 const express = require('express');
-const cors = require('cors');
 
 const app = express();
 
@@ -14,7 +13,6 @@ const requestLogger = (req, res, next) => {
 }
 app.use(express.json());
 
-app.use(cors());
 app.use(requestLogger);
 
 let notes = [
@@ -50,7 +48,7 @@ let notes = [
     response.json(notes.find(note => note.id === id))
   })
 
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 
 app.listen(PORT);
 

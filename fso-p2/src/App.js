@@ -1,23 +1,23 @@
 
 import { useState, useEffect } from 'react';
+import getAll from './services/notes';
 import './App.css';
-import axios from 'axios';
 function App() {
 
   const [notes, setNotes] = useState([]);
-  const hook = () => {
-    axios.get('http://localhost:3001/notes')
-        .then(res => {
-          console.log('Promise Fullfilled', res.data);
-          setNotes(res.data);
-        })
-  }
-  console.log('notes length', notes.length);
-  useEffect(hook, [])
+ 
+  useEffect(() => {
+    let request = getAll();
+    
+    request.then(res => setNotes(res.data));
+  }, []);
   
   return (
     <div className="App">
       <h1>Notes</h1>
+      <ul>
+        { notes.map(note => <li key={note.id}>{note.content}</li>) }
+      </ul>
     </div>
   );
 }
