@@ -34,7 +34,7 @@ let notes = [
   ]
 
   app.get('/', (request, response) => {
-    response.send('<a href="/notes">Notes</a>')
+    response.send('<a href="/api/notes">Notes</a>')
   })
 
   app.get('/api/notes', (request, response) => {
