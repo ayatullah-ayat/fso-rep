@@ -1,19 +1,36 @@
 const express = require('express');
-
-const cors = require('cors');
-const app = express();
 const mongoose = require('mongoose');
+const cors = require('cors');
 
 const url = `mongodb+srv://ayat2486:jPF5kYRBrtykTJnA@clusterfso1.1zjsm5m.mongodb.net/noteApp?retryWrites=true&w=majority`;
+
+const app = express();
 
 mongoose.set('strictQuery', false);
 
 mongoose.connect(url);
 
+const noteSchema = new mongoose.Schema({
+  content: String,
+  important: Boolean,
+})
+
+noteSchema.set('toJSON', {
+  transform: (document, returnedObject) => {
+      returnedObject.id = returnedObject._id.toString();
+      delete returnedObject._id;
+      delete returnedObject.__v;
+  }
+});
 const Note = mongoose.model('Note', noteSchema);
 
 
-
+Note.find({}).then(res => {
+  res.forEach(note => {
+      console.log(note);
+  })
+  mongoose.connection.close();
+});
 const requestLogger = (req, res, next) => {
   console.log('Method:', req.method);
   console.log('Path:', req.path);
@@ -53,14 +70,13 @@ let notes = [
     response.send('<a href="/api/notes">Notes</a>')
   })
 
-  app.get('/api/notes', (request, response) => {
-    let notes = Note.find({}).then(res => {
+  app.get('/api/notes', async (request, response) => {
+    let notes = await Note.find({}).then(res => {
       res.forEach(note => {
           console.log(note);
       })
-      mongoose.connection.close();
   })
-  response.json(notes);
+    await response.json(notes);
   })
   app.post('api/notes', (request, response) => {
     console.log('request body', request.body);
