@@ -2,6 +2,17 @@ const express = require('express');
 
 const cors = require('cors');
 const app = express();
+const mongoose = require('mongoose');
+
+const url = `mongodb+srv://ayat2486:jPF5kYRBrtykTJnA@clusterfso1.1zjsm5m.mongodb.net/noteApp?retryWrites=true&w=majority`;
+
+mongoose.set('strictQuery', false);
+
+mongoose.connect(url);
+
+const Note = mongoose.model('Note', noteSchema);
+
+
 
 const requestLogger = (req, res, next) => {
   console.log('Method:', req.method);
@@ -43,7 +54,13 @@ let notes = [
   })
 
   app.get('/api/notes', (request, response) => {
-    response.json(notes);
+    let notes = Note.find({}).then(res => {
+      res.forEach(note => {
+          console.log(note);
+      })
+      mongoose.connection.close();
+  })
+  response.json(notes);
   })
   app.post('api/notes', (request, response) => {
     console.log('request body', request.body);

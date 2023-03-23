@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 
 
 
-console.log(process.argv);
 const url = `mongodb+srv://ayat2486:jPF5kYRBrtykTJnA@clusterfso1.1zjsm5m.mongodb.net/noteApp?retryWrites=true&w=majority`;
 
 mongoose.set('strictQuery', false);
