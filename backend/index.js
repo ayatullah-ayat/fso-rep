@@ -24,6 +24,7 @@ app.use(requestLogger);
 
 app.use(express.static('build'));
 
+// index
 app.get('/api/notes', (request, response) => {
   Note.find({}).then((res, error) => {
     if(error){
@@ -32,11 +33,11 @@ app.get('/api/notes', (request, response) => {
     return response.status(200).json(res);
   })
 })
-app.post('/api/notes', (request, response) => {
+
+// store
+app.post('/api/notes', (request, response, next) => {
   console.log('Posting new Note...', request.body);
-  if(request.body.content === undefined){
-    return response.status(400).json({error: 'Body Content Missing'})
-  }  
+   
   const note = new Note({
     content: request.body.content,
     important: request.body.important || false,
@@ -45,13 +46,13 @@ app.post('/api/notes', (request, response) => {
   note.save()
   .then(res => {
     response.json(res);
-  });
+  })
+  .catch(error => next(error));
 
 });
 
-
-
-app.get('/api/notes/:id', (request, response) => {
+// show
+app.get('/api/notes/:id', (request, response, next) => {
   Note.findById(request.params.id)
   .then(note => {
     if(note){
@@ -61,9 +62,33 @@ app.get('/api/notes/:id', (request, response) => {
     }
   })
   .catch(err => {
-    console.log('err', err);
-    response.status(400).send({error: 'Malformatted Id'});
+    next(err);
   })
+});
+
+// update
+app.put('/api/notes/:id', (request, response, next) => {
+  console.log('Updating.........');
+  console.log(request.body);
+
+  const note = {
+    content: request.body.content,
+    important: request.body.important,
+  }
+
+  Note.findByIdAndUpdate(request.params.id, note, { new: true, runValidators: true, context: 'query' })
+  .then(updateNote => {
+    response.json(updateNote);
+  })
+  .catch(error => next(error))
+});
+
+app.delete('/api/notes/:id', (request, response, next) => {
+  console.log("Deleting......");
+
+  Note.findByIdAndRemove(request.params.id)
+  .then(deleteNote => response.json(deleteNote))
+  .catch(error => next(error));
 })
 
 const PORT = process.env.PORT || 3001;
@@ -75,5 +100,20 @@ const unknownEndpoint = (request, response) => {
 }
 
 app.use(unknownEndpoint)
+
+const errorHandler = (error, request, response, next) => {
+  console.log('errrr name========', error.name);
+
+  if(error.name == 'CastError'){
+    return response.status(400).send({error: 'Malformatted Id'});
+  }
+  else if(error.name == 'ValidationError') {
+    return response.status(400).send({error: error.message})
+  }
+
+  next(error);
+}
+
+app.use(errorHandler);
 
 console.log("Server running on ", PORT);
