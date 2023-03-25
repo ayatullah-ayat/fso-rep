@@ -17,6 +17,10 @@ const requestLogger = (req, res, next) => {
   next();
 }
 
+Note.find({}).then(res => {
+  console.log('res.........................', res);
+})
+
 app.use(express.json());
 app.use(cors());
 
