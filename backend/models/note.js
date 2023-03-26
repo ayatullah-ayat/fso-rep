@@ -4,13 +4,13 @@ mongoose.set('strictQuery', false);
 
 console.log('Connecting Url........................', url);
 mongoose.connect(url)
-.then(result => {
-    console.log('Connected MongoDB');
-    console.log('Connected URI', url);
-})
-.catch(err => {
-    console.log('Connection failed', err.message);
-})
+    .then( () => {
+        console.log('Connected MongoDB');
+        console.log('Connected URI', url);
+    })
+    .catch(err => {
+        console.log('Connection failed', err.message);
+    })
 
 const noteSchema = new mongoose.Schema({
     content: {
