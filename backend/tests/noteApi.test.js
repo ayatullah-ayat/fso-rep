@@ -1,3 +1,17 @@
 const mongoose = require('mongoose');
-const request = require('supertest');
-const app = require('../index')
+const supertest = require('supertest');
+const app = require('../app');
+
+
+const api = supertest(app);
+
+test('notes are returned as json',async  () => {
+    await api
+        .get('/api/notes')
+        .expect(200)
+        .expect('Content-Type', /application\/json/);
+}, 100000)
+
+afterAll(async() => {
+    await mongoose.connection.close();
+})
