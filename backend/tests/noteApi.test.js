@@ -7,23 +7,14 @@ const helper = require('./test_helper');
 
 const api = supertest(app);
 
-const initialNotes = [
-    {
-        content: 'HTML is easy',
-        important: false,
-    },
-    {
-        content: 'Browser can execute only JavaScript',
-        important: true,
-    },
-]
-
 beforeEach(async () => {
     await Note.deleteMany({});
-    let noteObject = new Note(helper.initialNotes[0]);
-    await noteObject.save();
-    noteObject = new Note(helper.initialNotes[1]);
-    await noteObject.save();
+    // cleared
+    const noteObjects = helper.initialNotes.map(note => new Note(note));
+    const promiseArray = noteObjects.map(noteObject => noteObject.save());
+    
+    const notePromise = await Promise.all(promiseArray);
+    console.log('notePromise==========================All', noteObjects);
 }, 100000)
 
 test('notes are returned as json', async () => {
@@ -33,7 +24,7 @@ test('notes are returned as json', async () => {
         .expect('Content-Type', /application\/json/);
 }, 100000);
 
-test('All note are return', async () => {
+test('All notes are return', async () => {
     const response = await api.get('/api/notes')
     expect(response.body).toHaveLength(helper.initialNotes.length)
 })
@@ -45,6 +36,37 @@ test('a specific note is within the returned notes', async () => {
     expect(contents).toContain('Browser can execute only JavaScript');
 })
 
+test('a specific note can be viewed', async () => {
+    const notesAtStart = await helper.notesInDb()
+
+    const noteToView = notesAtStart[0]
+
+    const resultNote = await api
+        .get(`/api/notes/${noteToView.id}`)
+        .expect(200)
+        .expect('Content-Type', /application\/json/)
+
+    expect(resultNote.body).toEqual(noteToView)
+})
+
+test('a note can be deleted', async() => {
+    const notesAtStart = await helper.notesInDb();
+    const noteDeleteContent = notesAtStart[0];
+
+    console.log('content========', noteDeleteContent);
+    await api
+            .delete('/api/notes/' + noteDeleteContent.id)
+            .expect(204)
+
+    let notesAtEnd = await helper.notesInDb();
+
+    expect(notesAtEnd).toHaveLength(helper.initialNotes.length - 1);
+    const contents = notesAtEnd.map(r => r.content);
+
+    expect(contents).not.toContain(noteDeleteContent.content);
+
+
+})
 test('a valid note can be added', async () => {
     const newNote = {
         content: 'async/await simplifies making async calls',
@@ -61,23 +83,23 @@ test('a valid note can be added', async () => {
 
     const contents = response.body.map(r => r.content)
 
-    expect(response.body).toHaveLength(initialNotes.length + 1)
+    expect(response.body).toHaveLength(helper.initialNotes.length + 1)
     expect(contents).toContain(
         'async/await simplifies making async calls'
     )
 })
 
-test('a note with not posted', async() => {
+test('note without content is not added', async () => {
     const note = {
         important: true
     }
     await api
-            .post('/api/notes')
-            .send(note)
-            .expect(400)
+        .post('/api/notes')
+        .send(note)
+        .expect(400)
     const response = await api.get('/api/notes');
 
-    expect(response.body).toHaveLength(initialNotes.length);
+    expect(response.body).toHaveLength(helper.initialNotes.length);
 });
 
 afterAll(async () => {
