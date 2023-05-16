@@ -12,9 +12,8 @@ beforeEach(async () => {
     // cleared
     const noteObjects = helper.initialNotes.map(note => new Note(note));
     const promiseArray = noteObjects.map(noteObject => noteObject.save());
-    
-    const notePromise = await Promise.all(promiseArray);
-    console.log('notePromise==========================All', noteObjects);
+
+    await Promise.all(promiseArray);
 }, 100000)
 
 test('notes are returned as json', async () => {
@@ -49,14 +48,14 @@ test('a specific note can be viewed', async () => {
     expect(resultNote.body).toEqual(noteToView)
 })
 
-test('a note can be deleted', async() => {
+test('a note can be deleted', async () => {
     const notesAtStart = await helper.notesInDb();
     const noteDeleteContent = notesAtStart[0];
 
     console.log('content========', noteDeleteContent);
     await api
-            .delete('/api/notes/' + noteDeleteContent.id)
-            .expect(204)
+        .delete('/api/notes/' + noteDeleteContent.id)
+        .expect(204)
 
     let notesAtEnd = await helper.notesInDb();
 
