@@ -4,6 +4,7 @@ const logger = require('./utils/logger');
 require('express-async-errors');
 const middleware = require('./utils/middleware');
 const notesRouter = require('./controllers/notes');
+const usersRouter = require('./controllers/users');
 
 const cors = require('cors');
 
@@ -14,6 +15,7 @@ logger.info('connecting to', config.MONGODB_URI)
 app.use(express.json());
 app.use(cors());
 app.use('/api/notes', notesRouter);
+app.use('/api/users', usersRouter);
 app.use(middleware.requestLogger);
 app.use(express.static('build'));
 
