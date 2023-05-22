@@ -10,10 +10,11 @@ const getAll = async () => {
 }
 
 const setToken = (strToken) => {
-    token = strToken;
+    token = 'bearer '+ strToken;
 }
 
 const create = async (newObject) => {
+    console.log('note creating...', token);
     const config = {
         headers: {
             Authorization: token
