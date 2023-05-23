@@ -1,9 +1,9 @@
 
 
 const NoteForm = ({
-            newNote,
-            handleNote,
-            handleInputNewNoteChange
+    newNote,
+    handleNote,
+    handleInputNewNoteChange
 }) => {
 
     return (
