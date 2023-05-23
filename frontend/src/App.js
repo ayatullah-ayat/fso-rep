@@ -1,7 +1,10 @@
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import noteService from './services/notes';
 import loginService from "./services/login";
+import LoginForm from './components/LoginForm';
+import Toggable from './components/Toggable';
+import NoteForm from './components/NoteForm';
 
 import './App.css';
 function App() {
@@ -46,6 +49,8 @@ function App() {
     }
   }
 
+  const noteFormRef = useRef();
+
   const handleNote = async (event) => {
     event.preventDefault();
 
@@ -53,66 +58,44 @@ function App() {
       const response = await noteService.create({ content: newNote })
       setNotes([...notes, response]);
       setNewNote('');
+      noteFormRef.current.toggleVisibility();
     }
 
-  }
-
-
-  const LoginForm = () => {
-    return (
-      <form onSubmit={handleLogin}>
-        <div className="form-group">
-          <label htmlFor="email">User Name</label>
-          <input
-            type="text"
-            className="form-control"
-            value={username}
-            onChange={({ target }) => setUsername(target.value)} />
-        </div>
-        <div className="form-group">
-          <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            className="form-control"
-            value={password}
-            onChange={({ target }) => setPassword(target.value)} />
-        </div>
-        <div className='mt-3'>
-          <button type="submit" className="btn btn-primary">Submit</button>
-        </div>
-      </form>
-    )
-  }
-
-  const NoteForm = () => {
-    return (
-      <form onSubmit={handleNote}>
-        <div className="form-group">
-          <label htmlFor="note">Note</label>
-          <input
-            type="text"
-            className="form-control"
-            value={newNote}
-            onChange={({ target }) => setNewNote(target.value)} />
-        </div>
-        <div className='mt-3'>
-          <button type="submit" className="btn btn-primary">Save Note</button>
-        </div>
-      </form>
-    );
   }
 
   return (
     <div className="App">
 
-      <div className='container'>
-        {user === null && <LoginForm />}
+      <div className='container mt-3'>
 
+        {!user &&
+          <Toggable btnLabel='Login'>
+            <LoginForm
+              username={username}
+              password={password}
+              handleUserNameChange={({ target }) => setUsername(target.value)}
+              handlePasswordChange={({ target }) => setPassword(target.value)}
+              handleLogin={handleLogin} />
+          </Toggable>
+        }
+
+        {user &&
+          <div>
+            <p>{ user.name } Logged in...</p>
+            <Toggable btnLabel='Add Note' ref={ noteFormRef }>
+              <NoteForm
+                newNote={newNote}
+                handleNote={handleNote}
+                handleInputNewNoteChange={({ target }) => setNewNote(target.value)}
+              />
+            </Toggable>
+          </div>
+        }
         <h1>Notes</h1>
         <ul className='list-group'>
           {notes.map(note => <li className='list-group-item' key={note.id}>{note.content}</li>)}
         </ul>
-        <NoteForm />
+
       </div>
     </div>
   );
