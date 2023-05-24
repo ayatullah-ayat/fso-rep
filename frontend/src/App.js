@@ -5,20 +5,12 @@ import loginService from './services/login';
 import LoginForm from './components/LoginForm';
 import Toggable from './components/Toggable';
 import NoteForm from './components/NoteForm';
+import noteReducer from './reducers/noteReducer';
 
 import { createStore } from 'redux';
 
 import './App.css';
 import Note from './components/Note';
-
-const noteReducer = (state = [], action) => {
-    if(action.type === 'NEW_NOTE'){
-        state.push(action.payload);
-        return state;
-    }
-
-    return state;
-}
 
 const store = createStore(noteReducer);
 
