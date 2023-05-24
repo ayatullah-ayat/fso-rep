@@ -6,8 +6,46 @@ import LoginForm from './components/LoginForm';
 import Toggable from './components/Toggable';
 import NoteForm from './components/NoteForm';
 
+import { createStore } from 'redux';
+
 import './App.css';
 import Note from './components/Note';
+
+const noteReducer = (state = [], action) => {
+    if(action.type === 'NEW_NOTE'){
+        state.push(action.payload);
+        return state;
+    }
+
+    return state;
+}
+
+const store = createStore(noteReducer);
+
+store.subscribe(() => {
+    const storeNow = store.getState();
+
+    console.log('storeNow', storeNow);
+})
+
+store.dispatch({
+    type: 'NEW_NOTE',
+    payload: {
+        content: 'the app state is redux store',
+        important: true,
+        id: 1,
+    }
+});
+
+store.dispatch({
+    type: 'NEW_NOTE',
+    payload: {
+        content: 'state changes are made with actions',
+        important: false,
+        id: 2
+    }
+})
+
 function App() {
 
     const [notes, setNotes] = useState([]);
@@ -27,7 +65,6 @@ function App() {
             setUser(loggedUser)
             noteService.setToken(loggedUser.token);
         }
-
     }, [])
 
     const handleLogin = async (event) => {
@@ -94,7 +131,7 @@ function App() {
                 }
                 <h1>Notes</h1>
                 <ul className='list-group'>
-                    {notes.map(note => <Note note={note} key={note.id}/> )}
+                    {store.getState().map(note => <Note note={note} key={note.id}/> )}
                 </ul>
             </div>
         </div>
