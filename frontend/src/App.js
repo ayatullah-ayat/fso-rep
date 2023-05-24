@@ -22,32 +22,32 @@ function App() {
     }, []);
 
     useEffect(() => {
-      const loggedUser = JSON.parse(window.localStorage.getItem("loggedUser"));
-      if (loggedUser) {
-        setUser(loggedUser)
-        noteService.setToken(loggedUser.token);
-      }
+        const loggedUser = JSON.parse(window.localStorage.getItem("loggedUser"));
+        if (loggedUser) {
+            setUser(loggedUser)
+            noteService.setToken(loggedUser.token);
+        }
 
     }, [])
 
     const handleLogin = async (event) => {
-      event.preventDefault();
+        event.preventDefault();
 
-      try {
-        const user = await loginService.login({ username, password });
+        try {
+            const user = await loginService.login({ username, password });
 
-        if (user) {
-          window.localStorage.setItem('loggedUser', JSON.stringify(user));
+            if (user) {
+                window.localStorage.setItem('loggedUser', JSON.stringify(user));
 
-          noteService.setToken(user.token);
-          setUser(user);
-          setUsername('');
-          setPassword('');
+                noteService.setToken(user.token);
+                setUser(user);
+                setUsername('');
+                setPassword('');
+            }
         }
-      }
-      catch (exception) {
-        console.log('handleLogin_exception', exception);
-      }
+        catch (exception) {
+            console.log('handleLogin_exception', exception);
+        }
     }
 
     const noteFormRef = useRef();
