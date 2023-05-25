@@ -4,12 +4,23 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.css'
-import { createStore } from 'redux';
+
+import { configureStore } from '@reduxjs/toolkit'
 
 import { Provider } from 'react-redux';
 import noteReducer from './reducers/noteReducer';
+import filterReducer, { filterChange } from './reducers/filterReducer';
 
-const store = createStore(noteReducer);
+const store = configureStore({
+    reducer: {
+        notes: noteReducer,
+        filter: filterReducer
+    }
+});
+
+store.subscribe(() => console.log(store.getState()))
+
+store.dispatch(filterChange('IMPORTANT'))
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

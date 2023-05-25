@@ -10,6 +10,7 @@ import { useDispatch } from 'react-redux';
 
 import './App.css';
 import Notes from './components/Notes';
+import VisibilityFilter from './components/VisibilityFilter';
 
 function App() {
 
@@ -116,6 +117,8 @@ function App() {
                         </Toggable>
                     </div>
                 }
+                <VisibilityFilter />
+
                 <h1>Notes</h1>
                 <Notes />
             </div>
