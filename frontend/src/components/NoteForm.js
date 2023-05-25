@@ -1,5 +1,4 @@
 
-
 const NoteForm = ({
     newNote,
     handleNote,
