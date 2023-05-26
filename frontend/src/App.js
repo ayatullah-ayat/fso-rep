@@ -5,7 +5,7 @@ import loginService from './services/login';
 import LoginForm from './components/LoginForm';
 import Toggable from './components/Toggable';
 import NoteForm from './components/NoteForm';
-import { createNote } from './reducers/noteReducer';
+import { appendNote, setNotes } from './reducers/noteReducer';
 import { useDispatch } from 'react-redux';
 
 import './App.css';
@@ -34,6 +34,13 @@ function App() {
             noteService.setToken(loggedUser.token);
         }
     }, [])
+
+
+    useEffect(() => {
+        noteService.getAll().then(notes => {
+            dispatch(setNotes(notes));
+        })
+    })
 
     const handleLogin = async (event) => {
         event.preventDefault();
@@ -74,7 +81,9 @@ function App() {
         const content = event.target.note.value;
         event.target.note.value = '';
 
-        dispatch(createNote(content));
+        const note = await noteService.createNewNoteJsonServer(content);
+
+        dispatch(appendNote(note));
     }
 
     return (

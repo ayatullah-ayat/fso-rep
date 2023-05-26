@@ -1,16 +1,30 @@
 import axios from "axios"
-
-const baseUrl =  process.env.REACT_APP_BASE_URL + '/api/notes';
+const baseUrl =  process.env.REACT_APP_BASE_URL + '/notes';
 let token = null;
 
 const getAll = async () => {
-    const request = await axios.get(baseUrl);
+    const response = await axios.get(baseUrl);
 
-    return request;
+    return response.data;
 }
 
 const setToken = (strToken) => {
     token = 'bearer '+ strToken;
+}
+
+const createNewNoteJsonServer = async(content) => {
+    const note = {
+        content,
+        important: false
+    }
+
+    const newCreatedNote = await axios.post(baseUrl, note);
+    return newCreatedNote.data;
+}
+const updateNoteJsonServer = async (id, note) => {
+    const updateNote = note;
+    const updatedNote = await axios.put(baseUrl + '/' + id, updateNote);
+    return updatedNote.data;
 }
 
 const create = async (newObject) => {
@@ -30,4 +44,4 @@ const destroy = async (id) => {
     return response;
 }
 
-export default { getAll, create, destroy, setToken };
+export default { getAll, create, destroy, setToken, createNewNoteJsonServer, updateNoteJsonServer };

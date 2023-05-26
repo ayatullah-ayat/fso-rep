@@ -18,10 +18,6 @@ const store = configureStore({
     }
 });
 
-store.subscribe(() => console.log(store.getState()))
-
-// store.dispatch(filterChange('IMPORTANT'))
-
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <Provider store={store}>
