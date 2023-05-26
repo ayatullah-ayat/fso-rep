@@ -9,7 +9,7 @@ import { configureStore } from '@reduxjs/toolkit'
 
 import { Provider } from 'react-redux';
 import noteReducer from './reducers/noteReducer';
-import filterReducer, { filterChange } from './reducers/filterReducer';
+import filterReducer from './reducers/filterReducer';
 
 const store = configureStore({
     reducer: {
@@ -20,7 +20,7 @@ const store = configureStore({
 
 store.subscribe(() => console.log(store.getState()))
 
-store.dispatch(filterChange('IMPORTANT'))
+// store.dispatch(filterChange('IMPORTANT'))
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
