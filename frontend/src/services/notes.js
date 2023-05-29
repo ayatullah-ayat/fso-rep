@@ -1,5 +1,5 @@
 import axios from "axios"
-const baseUrl =  process.env.REACT_APP_BASE_URL + '/notes';
+const baseUrl =  () => process.env.REACT_APP_BASE_URL + '/notes';
 let token = null;
 
 const getAll = async () => {
@@ -44,4 +44,4 @@ const destroy = async (id) => {
     return response;
 }
 
-export default { getAll, create, destroy, setToken, createNewNoteJsonServer, updateNoteJsonServer };
+export default { getAll, create, destroy, setToken, createNewNoteJsonServer, updateNoteJsonServer, baseUrl };

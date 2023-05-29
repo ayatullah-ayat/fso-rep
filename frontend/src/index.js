@@ -5,24 +5,18 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.css'
 
-import { configureStore } from '@reduxjs/toolkit'
 
-import { Provider } from 'react-redux';
-import noteReducer from './reducers/noteReducer';
-import filterReducer from './reducers/filterReducer';
+import { QueryClient, QueryClientProvider } from 'react-query';
 
-const store = configureStore({
-    reducer: {
-        notes: noteReducer,
-        filter: filterReducer
-    }
-});
+
+
+const queryClient = new QueryClient();
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-    <Provider store={store}>
+    <QueryClientProvider client={ queryClient }>
         <App />
-    </Provider>
+    </QueryClientProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function
