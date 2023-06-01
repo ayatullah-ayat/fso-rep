@@ -15,6 +15,7 @@ import Notes from './components/Notes';
 import VisibilityFilter from './components/VisibilityFilter';
 import Home from './components/Home';
 import About from './components/About';
+import Note from './components/Note';
 
 function App() {
 
@@ -141,6 +142,7 @@ function App() {
 
                     <Routes>
                         <Route path='/' element={<Home />} />
+                        <Route path='/notes/:id' element={<Note notes />} />
                         <Route path='/notes' element={<Notes />} />
                         <Route path='/about' element={<About />} />
                     </Routes>
