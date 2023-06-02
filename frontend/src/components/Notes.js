@@ -16,7 +16,7 @@ const Notes = () => {
         <div>
             <h1>Notes</h1>
             <ul className='list-group'>
-                {notes.map(note => <Note note={note} key={note.id} />)}
+                {notes.map(note => <Note note={note}  key={note.id} />)}
             </ul>
         </div>
     );
