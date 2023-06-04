@@ -14,7 +14,7 @@ import './App.css';
 import Notes from './components/Notes';
 import VisibilityFilter from './components/VisibilityFilter';
 import Home from './components/Home';
-import About from './components/About';
+import User from './components/User';
 import SingleNote from './components/SingleNote';
 
 function App() {
@@ -101,7 +101,7 @@ function App() {
                     <div>
                         <Link style={{ padding: 5 }} to="/">Home</Link>
                         <Link style={{ padding: 5 }} to="/notes">Note</Link>
-                        <Link style={{ padding: 5 }} to="/about">About</Link>
+                        <Link style={{ padding: 5 }} to="/user">About</Link>
                     </div>
                     <form onSubmit={addNote}>
                         <div className="form-group">
@@ -144,7 +144,7 @@ function App() {
                         <Route path='/' element={<Home />} />
                         <Route path='/notes/:id' element={<SingleNote />} />
                         <Route path='/notes' element={<Notes />} />
-                        <Route path='/about' element={<About />} />
+                        <Route path='/user' element={<User />} />
                     </Routes>
                 </div>
             </div>
