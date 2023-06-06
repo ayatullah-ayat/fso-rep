@@ -1,4 +1,4 @@
 
-const User = () => <div>About Page</div>
+const User = () => <div>User Page</div>
 
 export default User;

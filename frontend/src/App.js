@@ -101,7 +101,7 @@ function App() {
                     <div>
                         <Link style={{ padding: 5 }} to="/">Home</Link>
                         <Link style={{ padding: 5 }} to="/notes">Note</Link>
-                        <Link style={{ padding: 5 }} to="/user">About</Link>
+                        <Link style={{ padding: 5 }} to="/user">User</Link>
                     </div>
                     <form onSubmit={addNote}>
                         <div className="form-group">
