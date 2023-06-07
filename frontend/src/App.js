@@ -8,7 +8,7 @@ import NoteForm from './components/NoteForm';
 import { appendNote, setNotes } from './reducers/noteReducer';
 import { useDispatch } from 'react-redux';
 
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { Routes, Route, Link, useNavigate } from 'react-router-dom';
 
 import './App.css';
 import Notes from './components/Notes';
@@ -20,7 +20,7 @@ import SingleNote from './components/SingleNote';
 function App() {
 
     const dispatch = useDispatch();
-
+    const navigate = useNavigate();
     // const [notes, setNotes] = useState([]);
     const [user, setUser] = useState(null);
     const [newNote, setNewNote] = useState('');
@@ -60,6 +60,7 @@ function App() {
                 setUser(user);
                 setUsername('');
                 setPassword('');
+                navigate("/");
             }
         }
         catch (exception) {
@@ -93,62 +94,69 @@ function App() {
 
     return (
 
-        <Router>
-            <div className="App">
+        <div className="App">
 
-                <div className='container mt-3'>
+            <div className='container mt-3'>
 
-                    <div>
-                        <Link style={{ padding: 5 }} to="/">Home</Link>
-                        <Link style={{ padding: 5 }} to="/notes">Note</Link>
-                        <Link style={{ padding: 5 }} to="/user">User</Link>
-                    </div>
-                    <form onSubmit={addNote}>
-                        <div className="form-group">
-                            <label htmlFor="note">Note</label>
-                            <input
-                                type="text"
-                                name='note'
-                                className="form-control" />
-                        </div>
-                        <div className='mt-3'>
-                            <button type="submit" className="btn btn-primary">Save Note</button>
-                        </div>
-                    </form>
-                    {!user &&
-                        <Toggable btnLabel='Login'>
-                            <LoginForm
-                                username={username}
-                                password={password}
-                                handleUserNameChange={({ target }) => setUsername(target.value)}
-                                handlePasswordChange={({ target }) => setPassword(target.value)}
-                                handleLogin={handleLogin} />
-                        </Toggable>
-                    }
-
-                    {user &&
-                        <div>
-                            <p>{user.name} Logged in...</p>
-                            <Toggable btnLabel='Add Note' ref={noteFormRef}>
-                                <NoteForm
-                                    newNote={newNote}
-                                    handleNote={addNote}
-                                    handleInputNewNoteChange={({ target }) => setNewNote(target.value)}
-                                />
-                            </Toggable>
-                        </div>
-                    }
-                    <VisibilityFilter />
-
-                    <Routes>
-                        <Route path='/' element={<Home />} />
-                        <Route path='/notes/:id' element={<SingleNote />} />
-                        <Route path='/notes' element={<Notes />} />
-                        <Route path='/user' element={<User />} />
-                    </Routes>
+                <div>
+                    <Link style={{ padding: 5 }} to="/">Home</Link>
+                    <Link style={{ padding: 5 }} to="/notes">Note</Link>
+                    <Link style={{ padding: 5 }} to="/user">User</Link>
+                    {user ?
+                        user.name + ' Logged In'
+                        : <Link style={{ padding: 5 }} to="/login">Login</Link>}
                 </div>
+                <form onSubmit={addNote}>
+                    <div className="form-group">
+                        <label htmlFor="note">Note</label>
+                        <input
+                            type="text"
+                            name='note'
+                            className="form-control" />
+                    </div>
+                    <div className='mt-3'>
+                        <button type="submit" className="btn btn-primary">Save Note</button>
+                    </div>
+                </form>
+                {!user &&
+                    <Toggable btnLabel='Login'>
+                        <LoginForm
+                            username={username}
+                            password={password}
+                            handleUserNameChange={({ target }) => setUsername(target.value)}
+                            handlePasswordChange={({ target }) => setPassword(target.value)}
+                            handleLogin={handleLogin} />
+                    </Toggable>
+                }
+
+                {user &&
+                    <div>
+                        <p>{user.name} Logged in...</p>
+                        <Toggable btnLabel='Add Note' ref={noteFormRef}>
+                            <NoteForm
+                                newNote={newNote}
+                                handleNote={addNote}
+                                handleInputNewNoteChange={({ target }) => setNewNote(target.value)}
+                            />
+                        </Toggable>
+                    </div>
+                }
+                <VisibilityFilter />
+
+                <Routes>
+                    <Route path='/' element={<Home />} />
+                    <Route path='/notes/:id' element={<SingleNote />} />
+                    <Route path='/notes' element={<Notes />} />
+                    <Route path='/user' element={<User />} />
+                    <Route path='/login' element={<LoginForm
+                        username={username}
+                        password={password}
+                        handleUserNameChange={({ target }) => setUsername(target.value)}
+                        handlePasswordChange={({ target }) => setPassword(target.value)}
+                        handleLogin={handleLogin} />} />
+                </Routes>
             </div>
-        </Router>
+        </div>
 
     );
 }
