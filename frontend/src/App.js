@@ -8,7 +8,7 @@ import NoteForm from './components/NoteForm';
 import { appendNote, setNotes } from './reducers/noteReducer';
 import { useDispatch } from 'react-redux';
 
-import { Routes, Route, Link, useNavigate } from 'react-router-dom';
+import { Routes, Route, Link, useNavigate, Navigate } from 'react-router-dom';
 
 import './App.css';
 import Notes from './components/Notes';
@@ -147,7 +147,7 @@ function App() {
                     <Route path='/' element={<Home />} />
                     <Route path='/notes/:id' element={<SingleNote />} />
                     <Route path='/notes' element={<Notes />} />
-                    <Route path='/user' element={<User />} />
+                    <Route path='/user' element={ user ? <User /> : <Navigate replace to="/login" />} />
                     <Route path='/login' element={<LoginForm
                         username={username}
                         password={password}
