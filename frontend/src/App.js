@@ -8,7 +8,7 @@ import NoteForm from './components/NoteForm';
 import { appendNote, setNotes } from './reducers/noteReducer';
 import { useDispatch } from 'react-redux';
 
-import { Routes, Route, Link, useNavigate, Navigate } from 'react-router-dom';
+import { Routes, Route, Link, useNavigate, Navigate, useMatch } from 'react-router-dom';
 
 import './App.css';
 import Notes from './components/Notes';
@@ -92,6 +92,20 @@ function App() {
         dispatch(appendNote(note));
     }
 
+    const notes = useSelector(state => {
+        if(state.filter === 'ALL'){
+            return state.notes;
+        }
+
+        return state.filter === 'IMPORTANT' ?
+            state.notes.filter(note => note.important === true) :
+            state.notes.filter(note => note.important === false);
+    });
+
+    const match = useMatch('/notes/:id');
+
+    const note = match ? notes.find(note => note.id === Number(match.params.id)) : null
+
     return (
 
         <div className="App">
@@ -145,8 +159,8 @@ function App() {
 
                 <Routes>
                     <Route path='/' element={<Home />} />
-                    <Route path='/notes/:id' element={<SingleNote />} />
-                    <Route path='/notes' element={<Notes />} />
+                    <Route path='/notes/:id' element={<SingleNote note={ note } />} />
+                    <Route path='/notes' element={<Notes notes={ notes } />} />
                     <Route path='/user' element={ user ? <User /> : <Navigate replace to="/login" />} />
                     <Route path='/login' element={<LoginForm
                         username={username}

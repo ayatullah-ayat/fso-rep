@@ -2,16 +2,8 @@ import { useSelector } from "react-redux";
 import Note from "./Note";
 // import axios from "axios";
 
-const Notes = () => {
-    const notes = useSelector(state => {
-        if(state.filter === 'ALL'){
-            return state.notes;
-        }
+const Notes = ( { notes } ) => {
 
-        return state.filter === 'IMPORTANT' ?
-            state.notes.filter(note => note.important === true) :
-            state.notes.filter(note => note.important === false);
-    });
     return (
         <div>
             <h1>Notes</h1>
