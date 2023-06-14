@@ -17,6 +17,29 @@ import Home from './components/Home';
 import User from './components/User';
 import SingleNote from './components/SingleNote';
 
+
+const useCounter = () => {
+    const [value, setValue] = useState(0);
+
+    const increase = () => {
+        setValue(value + 1)
+    }
+    const decrease = () => {
+        setValue(value - 1)
+    }
+
+    const zero = () => {
+        setValue(0)
+    }
+
+    return {
+        value,
+        increase,
+        decrease,
+        zero
+    }
+}
+
 function App() {
 
     const dispatch = useDispatch();
@@ -32,6 +55,7 @@ function App() {
     //     request.then(res => setNotes(res.data));
     // }, []);
 
+    const counter = useCounter();
     useEffect(() => {
         const loggedUser = JSON.parse(window.localStorage.getItem("loggedUser"));
         if (loggedUser) {
@@ -112,6 +136,9 @@ function App() {
 
             <div className='container mt-3'>
 
+                <button>Increment</button>
+                <p>{counter.value}</p>
+                <button>Decrement</button>
                 <div>
                     <Link style={{ padding: 5 }} to="/">Home</Link>
                     <Link style={{ padding: 5 }} to="/notes">Note</Link>
