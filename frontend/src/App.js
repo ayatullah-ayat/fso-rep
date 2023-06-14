@@ -6,7 +6,7 @@ import LoginForm from './components/LoginForm';
 import Toggable from './components/Toggable';
 import NoteForm from './components/NoteForm';
 import { appendNote, setNotes } from './reducers/noteReducer';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { Routes, Route, Link, useNavigate, Navigate, useMatch } from 'react-router-dom';
 

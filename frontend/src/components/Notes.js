@@ -1,4 +1,3 @@
-import { useSelector } from "react-redux";
 import Note from "./Note";
 // import axios from "axios";
 
