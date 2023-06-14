@@ -126,6 +126,13 @@ function App() {
             state.notes.filter(note => note.important === false);
     });
 
+    const incrementByOne = () => {
+        counter.increase();
+    }
+    const decrementByOne = () => {
+        counter.decrease();
+    }
+
     const match = useMatch('/notes/:id');
 
     const note = match ? notes.find(note => note.id === Number(match.params.id)) : null
@@ -136,9 +143,9 @@ function App() {
 
             <div className='container mt-3'>
 
-                <button>Increment</button>
+                <button onClick={incrementByOne}>Increment</button>
                 <p>{counter.value}</p>
-                <button>Decrement</button>
+                <button onClick={decrementByOne}>Decrement</button>
                 <div>
                     <Link style={{ padding: 5 }} to="/">Home</Link>
                     <Link style={{ padding: 5 }} to="/notes">Note</Link>
