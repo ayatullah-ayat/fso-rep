@@ -16,29 +16,7 @@ import VisibilityFilter from './components/VisibilityFilter';
 import Home from './components/Home';
 import User from './components/User';
 import SingleNote from './components/SingleNote';
-
-
-const useCounter = () => {
-    const [value, setValue] = useState(0);
-
-    const increase = () => {
-        setValue(value + 1)
-    }
-    const decrease = () => {
-        setValue(value - 1)
-    }
-
-    const zero = () => {
-        setValue(0)
-    }
-
-    return {
-        value,
-        increase,
-        decrease,
-        zero
-    }
-}
+import useCounter from './hooks/counter';
 
 function App() {
 
@@ -69,8 +47,8 @@ function App() {
         noteService.getAll().then(notes => {
             dispatch(setNotes(notes));
         })
-    })
-
+    }, [])
+    console.log('App_running...');
     const handleLogin = async (event) => {
         event.preventDefault();
 
