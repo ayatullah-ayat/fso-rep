@@ -17,6 +17,7 @@ import Home from './components/Home';
 import User from './components/User';
 import SingleNote from './components/SingleNote';
 import useCounter from './hooks/counter';
+import UserDetailsForm from './components/UserDetailsForm';
 
 function App() {
 
@@ -120,6 +121,9 @@ function App() {
         <div className="App">
 
             <div className='container mt-3'>
+                <div className="w-25 m-auto">
+                    <UserDetailsForm />
+                </div>
 
                 <button onClick={incrementByOne}>Increment</button>
                 <p>{counter.value}</p>
